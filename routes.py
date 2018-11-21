@@ -16,6 +16,8 @@ routes_in = [
     ("/$app/appadmin", "/$app/appadmin"),
     ("/$app/appadmin/$anything", "/$app/appadmin/$anything"),
     ("/static/$anything", "/oneapp/static/$anything"),
+    ("/$domain/v2/nonlocal/$anything", "/$domain/v2/non_local/$anything"),
+    ("/$domain/v2_1/nonlocal/$anything", "/$domain/v2_1/non_local/$anything"),
     ("/$domain(?P<rest>.*)$", "/oneapp\g<rest>?client=$domain"),
 ]
 
