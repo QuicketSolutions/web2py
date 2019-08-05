@@ -19,15 +19,19 @@ An important part of web2py is the Database Abstraction Layer (DAL). In early 20
 
 The use of a sub-module requires a one-time use of the --recursive flag for git clone if you are cloning web2py from scratch.
 
-    git clone --recursive https://github.com/web2py/web2py.git
+    git clone --recursive https://github.com/QuicketSolutions/web2py.git
 
 If you have an existing repository, the commands below need to be executed at least once:
 
     git submodule update --init --recursive
 
-If you have a folder gluon/dal you must remove it:
+If you have a folder gluon/dal or gluon/packages/dal, you must remove it:
 
     rm -r gluon/dal
+
+or
+    
+    rm -r gluon/packages/dal
 
 PyDAL uses a separate stable release cycle to the rest of web2py. PyDAL releases will use a date-naming scheme similar to Ubuntu. Issues related to PyDAL should be reported to its separate repository.
 
