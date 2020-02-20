@@ -42,7 +42,9 @@ def RedisSession(redis_conn, session_expiry=False, with_lock=False, db=None):
 
     locker.acquire()
     try:
-        instance_name = 'redis_instance_' + current.request.application
+        instance_name = 'redis_instance_' + (
+            current.request.vars.client or current.request.application
+        )
         if not hasattr(RedisSession, instance_name):
             setattr(RedisSession, instance_name,
                     RedisClient(redis_conn, session_expiry=session_expiry, with_lock=with_lock))
