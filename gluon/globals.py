@@ -597,7 +597,6 @@ class Response(Storage):
             the option must be explicitly set as function parameter (will
             default to the last request argument otherwise)
         """
-
         headers = self.headers
         # for attachment settings and backward compatibility
         keys = [item.lower() for item in headers]
@@ -629,7 +628,16 @@ class Response(Storage):
                 headers['Content-Length'] = \
                     os.path.getsize(filename)
             except OSError:
-                pass
+                # maybe it's a tempfile.TemporaryFile or NamedTemporaryFile?
+                try:
+                    stream.flush()
+                    original_position = stream.tell()
+                    if isinstance(original_position, int):
+                        stream.seek(0, 2)
+                        headers['Content-Length'] = stream.tell()
+                        stream.seek(original_position)
+                except AttributeError:
+                    pass
 
         env = request.env
         # Internet Explorer < 9.0 will not allow downloads over SSL unless caching is enabled
