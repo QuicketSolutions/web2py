@@ -623,21 +623,15 @@ class Response(Storage):
 
         if filename and 'content-type' not in keys:
             headers['Content-Type'] = contenttype(filename)
-        if filename and 'content-length' not in keys:
+        if 'content-length' not in keys:
             try:
-                headers['Content-Length'] = \
-                    os.path.getsize(filename)
-            except OSError:
-                # maybe it's a tempfile.TemporaryFile or NamedTemporaryFile?
-                try:
-                    stream.flush()
-                    original_position = stream.tell()
-                    if isinstance(original_position, int):
-                        stream.seek(0, 2)
-                        headers['Content-Length'] = stream.tell()
-                        stream.seek(original_position)
-                except AttributeError:
-                    pass
+                headers['Content-Length'] = os.fstat(stream.fileno()).st_size
+            except (AttributeError, OSError, TypeError):
+                if filename:
+                    try:
+                        headers['Content-Length'] = os.stat(filename).st_size
+                    except OSError:
+                        pass
 
         env = request.env
         # Internet Explorer < 9.0 will not allow downloads over SSL unless caching is enabled
