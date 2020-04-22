@@ -627,7 +627,7 @@ class Response(Storage):
             try:
                 headers['Content-Length'] = os.fstat(stream.fileno()).st_size
             except (AttributeError, OSError, TypeError):
-                if filename and filename != '<fdopen>':
+                if filename:
                     try:
                         headers['Content-Length'] = os.stat(filename).st_size
                     except OSError:
