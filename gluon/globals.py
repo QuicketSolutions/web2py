@@ -626,12 +626,8 @@ class Response(Storage):
         if 'content-length' not in keys:
             try:
                 headers['Content-Length'] = os.fstat(stream.fileno()).st_size
-            except (AttributeError, OSError, TypeError):
-                if filename:
-                    try:
-                        headers['Content-Length'] = os.stat(filename).st_size
-                    except OSError:
-                        pass
+            except OSError:
+                pass
 
         env = request.env
         # Internet Explorer < 9.0 will not allow downloads over SSL unless caching is enabled
