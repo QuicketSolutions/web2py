@@ -597,7 +597,6 @@ class Response(Storage):
             the option must be explicitly set as function parameter (will
             default to the last request argument otherwise)
         """
-
         headers = self.headers
         # for attachment settings and backward compatibility
         keys = [item.lower() for item in headers]
@@ -624,10 +623,9 @@ class Response(Storage):
 
         if filename and 'content-type' not in keys:
             headers['Content-Type'] = contenttype(filename)
-        if filename and 'content-length' not in keys:
+        if 'content-length' not in keys:
             try:
-                headers['Content-Length'] = \
-                    os.path.getsize(filename)
+                headers['Content-Length'] = os.fstat(stream.fileno()).st_size
             except OSError:
                 pass
 
