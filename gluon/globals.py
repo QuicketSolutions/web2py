@@ -626,7 +626,7 @@ class Response(Storage):
         if 'content-length' not in keys:
             try:
                 headers['Content-Length'] = os.fstat(stream.fileno()).st_size
-            except OSError:
+            except (AttributeError, OSError):
                 pass
 
         env = request.env
